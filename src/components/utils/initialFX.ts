@@ -1,4 +1,4 @@
-import { SplitText } from "gsap-trial/SplitText";
+import { splitText, SplitResult } from "./customSplitText";
 import gsap from "gsap";
 import { smoother } from "../Navbar";
 
@@ -12,8 +12,12 @@ export function initialFX() {
     delay: 1,
   });
 
-  var landingText = new SplitText(
-    [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
+  var landingText = splitText(
+    [
+      ...Array.from(document.querySelectorAll<HTMLElement>(".landing-info h3")),
+      ...Array.from(document.querySelectorAll<HTMLElement>(".landing-intro h2")),
+      ...Array.from(document.querySelectorAll<HTMLElement>(".landing-intro h1")),
+    ],
     {
       type: "chars,lines",
       linesClass: "split-line",
@@ -33,9 +37,9 @@ export function initialFX() {
     }
   );
 
-  let TextProps = { type: "chars,lines", linesClass: "split-h2" };
+  let splitOpts = { type: "chars,lines", linesClass: "split-h2" };
 
-  var landingText2 = new SplitText(".landing-h2-info", TextProps);
+  var landingText2 = splitText(".landing-h2-info", splitOpts);
   gsap.fromTo(
     landingText2.chars,
     { opacity: 0, y: 80, filter: "blur(5px)" },
@@ -72,15 +76,15 @@ export function initialFX() {
     }
   );
 
-  var landingText3 = new SplitText(".landing-h2-info-1", TextProps);
-  var landingText4 = new SplitText(".landing-h2-1", TextProps);
-  var landingText5 = new SplitText(".landing-h2-2", TextProps);
+  var landingText3 = splitText(".landing-h2-info-1", splitOpts);
+  var landingText4 = splitText(".landing-h2-1", splitOpts);
+  var landingText5 = splitText(".landing-h2-2", splitOpts);
 
   LoopText(landingText2, landingText3);
   LoopText(landingText4, landingText5);
 }
 
-function LoopText(Text1: SplitText, Text2: SplitText) {
+function LoopText(Text1: SplitResult, Text2: SplitResult) {
   var tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
   const delay = 4;
   const delay2 = delay * 2 + 1;
